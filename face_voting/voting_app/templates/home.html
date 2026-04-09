@@ -2,177 +2,1019 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Online Voting System</title>
-    <link rel="stylesheet" href="../static/output.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureVote — Online Voting System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-navy: #0a1628;
+            --secondary-navy: #1a2942;
+            --accent-gold: #d4a574;
+            --accent-amber: #f0b456;
+            --light-cream: #faf8f5;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --border-subtle: rgba(212, 165, 116, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-dark);
+            background: var(--light-cream);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Crimson Pro', serif;
+            font-weight: 700;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(12px);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-family: 'Crimson Pro', serif;
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gold);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+            color: var(--primary-navy);
+            padding: 0.75rem 1.75rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 0.75rem 1.75rem;
+            border-radius: 6px;
+            border: 2px solid var(--accent-gold);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-navy) 100%);
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(212, 165, 116, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(240, 180, 86, 0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(212, 165, 116, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 165, 116, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.5;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 5% 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-text h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            color: white;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .hero-text .accent {
+            color: var(--accent-gold);
+            display: block;
+        }
+        
+        .hero-text p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-visual {
+            position: relative;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(212, 165, 116, 0.4);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-family: 'Crimson Pro', serif;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+        
+        .section-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--accent-gold);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header h2 {
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-amber));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(10, 22, 40, 0.1);
+            border-color: var(--accent-gold);
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(240, 180, 86, 0.15));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .feature-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 8rem 5%;
+            background: var(--primary-navy);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .how-it-works::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 165, 116, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .how-it-works .section-header h2,
+        .how-it-works .section-header p {
+            color: white;
+        }
+        
+        .how-it-works .section-tag {
+            background: rgba(212, 165, 116, 0.15);
+        }
+        
+        .steps-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 50px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                var(--accent-gold) 0%, 
+                var(--accent-gold) 25%, 
+                rgba(212, 165, 116, 0.3) 25%, 
+                rgba(212, 165, 116, 0.3) 50%, 
+                rgba(212, 165, 116, 0.3) 50%, 
+                rgba(212, 165, 116, 0.3) 75%, 
+                rgba(212, 165, 116, 0.3) 100%);
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1), rgba(240, 180, 86, 0.1));
+            border: 3px solid rgba(212, 165, 116, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-family: 'Crimson Pro', serif;
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover .step-number {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+            color: var(--primary-navy);
+            border-color: var(--accent-gold);
+            transform: scale(1.1);
+        }
+        
+        .step h3 {
+            color: white;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        /* About Section */
+        .about {
+            padding: 8rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+        
+        .about-text h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+        
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .about-visual {
+            position: relative;
+            height: 500px;
+        }
+        
+        .about-card {
+            position: absolute;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(10, 22, 40, 0.1);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .about-card-1 {
+            top: 0;
+            left: 0;
+            width: 280px;
+            z-index: 3;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .about-card-2 {
+            bottom: 40px;
+            right: 0;
+            width: 300px;
+            z-index: 2;
+            animation: float 3s ease-in-out 1s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .about-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .about-card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .about-card li {
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .about-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+        
+        /* CTA Section */
+        .cta {
+            padding: 6rem 5%;
+            background: linear-gradient(135deg, var(--secondary-navy), var(--primary-navy));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 165, 116, 0.1) 0%, transparent 60%);
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta h2 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .cta p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2.5rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--primary-navy);
+            padding: 4rem 5% 2rem;
+            border-top: 1px solid rgba(212, 165, 116, 0.2);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-brand h3 {
+            color: var(--accent-gold);
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+        }
+        
+        .footer-links h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .footer-links a {
+            display: block;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-gold);
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(212, 165, 116, 0.2);
+            padding-top: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 6rem;
+            }
+            
+            .hero-text h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-line {
+                display: none;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
 </head>
-
-<body class="bg-gray-100">
-
-<!-- NAVBAR -->
-<header class="bg-blue-600 w-full h-[90px] px-6 flex items-center justify-between fixed top-0 shadow-lg z-50">
-    <p class="text-2xl text-white font-bold">Online Voting System</p>
-
-    <nav class="flex items-center">
-        <a href="#home" class="mr-6 text-lg text-white hover:underline">Home</a>
-        <a href="#features" class="mr-6 text-lg text-white hover:underline">Features</a>
-        <a href="#about" class="mr-6 text-lg text-white hover:underline">About</a>
-        <a href="{% url 'register' %}" class="mr-6 text-lg text-white hover:underline">Register</a>
-        <a href="{% url 'vote' %}" class="text-lg text-white hover:underline">Vote</a>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">SecureVote</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+            <a href="#about">About</a>
+            <a href="#" class="btn-primary">Get Started</a>
+        </div>
     </nav>
-</header>
 
-<main class="mt-[90px]">
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    The Future of 
+                    <span class="accent">Democratic Voting</span>
+                </h1>
+                <p>
+                    Secure, transparent, and accessible digital voting powered by advanced 
+                    biometric authentication. Participate in democracy from anywhere, anytime.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn-primary">Register Now</a>
+                    <a href="#" class="btn-secondary">Start Voting</a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">99.9%</div>
+                        <div class="stat-label">Accuracy Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">256-bit</div>
+                        <div class="stat-label">Encryption</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Accessibility</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Transparency</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- HERO SECTION -->
-<section id="home" class="bg-cover bg-center h-screen flex flex-col items-center justify-center text-center"
-style="background-image: url('https://cdn.pixabay.com/photo/2024/06/10/08/33/ai-generated-8820201_1280.jpg');">
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <span class="section-tag">Core Capabilities</span>
+            <h2>Why Choose SecureVote</h2>
+            <p>Advanced technology meets democratic principles for the most secure voting experience</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Face Recognition</h3>
+                <p>
+                    State-of-the-art biometric authentication ensures only registered 
+                    voters can access the ballot, preventing fraud and duplicate voting.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>End-to-End Encryption</h3>
+                <p>
+                    Military-grade encryption protects your vote from registration to 
+                    counting, ensuring complete privacy and data security.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Global Accessibility</h3>
+                <p>
+                    Vote from anywhere in the world with internet access. No more 
+                    missing elections due to location or mobility constraints.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Real-Time Results</h3>
+                <p>
+                    Instant vote counting and transparent result tracking provide 
+                    immediate feedback and build trust in the electoral process.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Multi-Device Support</h3>
+                <p>
+                    Seamlessly vote from your smartphone, tablet, or computer with 
+                    our responsive platform designed for all devices.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h3>Audit Trail</h3>
+                <p>
+                    Complete transparency with blockchain-backed verification ensures 
+                    every vote is counted and can be independently verified.
+                </p>
+            </div>
+        </div>
+    </section>
 
-<h1 class="text-5xl font-bold text-white mb-6">
-Smart Online Voting System
-</h1>
+    <!-- How It Works -->
+    <section id="how" class="how-it-works">
+        <div class="section-header">
+            <span class="section-tag">Simple Process</span>
+            <h2>Four Steps to Democracy</h2>
+            <p>Voting has never been easier or more secure</p>
+        </div>
+        
+        <div class="steps-container">
+            <div class="step-line"></div>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Register</h3>
+                    <p>
+                        Create your secure voter account with identity verification 
+                        and biometric enrollment.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Verify Identity</h3>
+                    <p>
+                        Our advanced face recognition system confirms your identity 
+                        in seconds.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Cast Your Vote</h3>
+                    <p>
+                        Review candidates and make your selection with confidence 
+                        and privacy.
+                    </p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Receive Confirmation</h3>
+                    <p>
+                        Get instant confirmation that your vote was securely 
+                        recorded and counted.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<p class="text-white text-xl mb-8 max-w-xl">
-Secure, transparent and convenient digital voting powered by face recognition technology.
-</p>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-content">
+            <div class="about-text">
+                <span class="section-tag">Our Mission</span>
+                <h2>Modernizing Democratic Participation</h2>
+                <p>
+                    Online voting systems represent a fundamental shift in how citizens 
+                    participate in democracy. By leveraging cutting-edge technology, we're 
+                    making elections more accessible without compromising security.
+                </p>
+                <p>
+                    Our platform combines biometric face recognition with blockchain 
+                    verification to create the most secure digital voting experience 
+                    available. Every vote is encrypted, verified, and permanently recorded 
+                    in an immutable ledger.
+                </p>
+                <p>
+                    We believe that technology should empower democracy, not replace it. 
+                    That's why transparency, accessibility, and security are at the core 
+                    of everything we build.
+                </p>
+            </div>
+            
+            <div class="about-visual">
+                <div class="about-card about-card-1">
+                    <h4>Security Features</h4>
+                    <ul>
+                        <li>256-bit AES encryption</li>
+                        <li>Biometric authentication</li>
+                        <li>Blockchain verification</li>
+                        <li>Zero-knowledge proofs</li>
+                    </ul>
+                </div>
+                
+                <div class="about-card about-card-2">
+                    <h4>Compliance Standards</h4>
+                    <ul>
+                        <li>GDPR compliant</li>
+                        <li>ISO 27001 certified</li>
+                        <li>SOC 2 Type II</li>
+                        <li>WCAG 2.1 accessible</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div>
-<a href="{% url 'register' %}">
-<button class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg mr-4 hover:bg-gray-200">
-Register Now
-</button>
-</a>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>SecureVote</h3>
+                <p>
+                    Building trust in democracy through technology. Our mission is to make 
+                    voting accessible, secure, and transparent for everyone.
+                </p>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#how">How It Works</a>
+                <a href="#about">About</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Get Started</h4>
+                <a href="#">Register</a>
+                <a href="#">Vote Now</a>
+                <a href="#">Help Center</a>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Contact Us</h4>
+                <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 0.75rem;">Email: contact@securevote.com</p>
+                <p style="color: rgba(255, 255, 255, 0.6); margin-bottom: 0.75rem;">Phone: +91 234567890</p>
+                <p style="color: rgba(255, 255, 255, 0.6);">Support: 24/7 Available</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 SecureVote. All rights reserved. Built with trust, secured by technology.</p>
+        </div>
+    </footer>
 
-<a href="{% url 'vote' %}">
-<button class="bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-800">
-Start Voting
-</button>
-</a>
-</div>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-</section>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
 
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-<!-- FEATURES SECTION -->
-<section id="features" class="py-16 px-6 bg-white">
+        // Observe feature cards and steps
+        document.querySelectorAll('.feature-card, .step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
 
-<h2 class="text-4xl font-bold text-center text-blue-600 mb-12">
-Key Features
-</h2>
-
-<div class="grid md:grid-cols-3 gap-8">
-
-<div class="bg-gray-100 p-6 rounded-lg shadow">
-<h3 class="text-xl font-semibold mb-2">Face Recognition</h3>
-<p>Advanced biometric authentication ensures only registered voters can vote securely.</p>
-</div>
-
-<div class="bg-gray-100 p-6 rounded-lg shadow">
-<h3 class="text-xl font-semibold mb-2">Secure Voting</h3>
-<p>End-to-end encrypted voting process ensures privacy and protects voter identity.</p>
-</div>
-
-<div class="bg-gray-100 p-6 rounded-lg shadow">
-<h3 class="text-xl font-semibold mb-2">Accessible Anywhere</h3>
-<p>Vote easily from anywhere using a secure online platform.</p>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- HOW IT WORKS -->
-<section class="py-16 px-6 bg-gray-100">
-
-<h2 class="text-4xl font-bold text-center text-blue-600 mb-12">
-How It Works
-</h2>
-
-<div class="grid md:grid-cols-4 gap-8 text-center">
-
-<div>
-<h3 class="text-xl font-semibold mb-2">1. Register</h3>
-<p>Create your voter account.</p>
-</div>
-
-<div>
-<h3 class="text-xl font-semibold mb-2">2. Face Verification</h3>
-<p>System verifies your identity using face recognition.</p>
-</div>
-
-<div>
-<h3 class="text-xl font-semibold mb-2">3. Vote</h3>
-<p>Select your preferred candidate.</p>
-</div>
-
-<div>
-<h3 class="text-xl font-semibold mb-2">4. Confirmation</h3>
-<p>Your vote is securely recorded.</p>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ABOUT SECTION -->
-<section id="about" class="py-16 px-6 bg-white">
-
-<h2 class="text-4xl font-bold text-blue-600 text-center mb-8">
-About Online Voting
-</h2>
-
-<div class="max-w-4xl mx-auto text-gray-700 text-lg leading-relaxed text-justify">
-
-<p class="mb-6">
-Online voting systems improve accessibility and convenience in elections by enabling voters
-to cast their votes remotely using secure digital platforms.
-</p>
-
-<p class="mb-6">
-This system integrates biometric face recognition technology to verify voter identity and
-ensure that only registered voters can participate in the election process.
-</p>
-
-<p>
-By combining modern authentication techniques with secure voting protocols, online voting
-systems aim to increase voter participation while maintaining transparency and integrity
-in the electoral process.
-</p>
-
-</div>
-
-</section>
-
-</main>
-
-
-<!-- FOOTER -->
-<footer class="bg-blue-600 text-white py-10">
-
-<div class="flex flex-col md:flex-row justify-evenly">
-
-<nav class="flex flex-col mb-6">
-<a href="#home" class="mb-3 hover:underline">Home</a>
-<a href="#features" class="mb-3 hover:underline">Features</a>
-<a href="#about" class="mb-3 hover:underline">About</a>
-<a href="{% url 'register' %}" class="mb-3 hover:underline">Register</a>
-<a href="{% url 'vote' %}" class="hover:underline">Vote</a>
-</nav>
-
-<div>
-<p class="text-xl mb-4 font-semibold">Contact Us</p>
-<p>Email: example@example.com</p>
-<p>Phone: +91 234567890</p>
-</div>
-
-</div>
-
-<p class="text-center text-sm mt-8">
-© 2025 Online Voting System. All rights reserved.
-</p>
-
-</footer>
-
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(10, 22, 40, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(10, 22, 40, 0.95)';
+            }
+        });
+    </script>
 </body>
 </html>
