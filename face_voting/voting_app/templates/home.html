@@ -1,59 +1,178 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Online Voting System</title>
     <link rel="stylesheet" href="../static/output.css">
 </head>
 
-<body class="home">
-    <header class="bg-blue-500 w-full h-[100px] px-4 flex items-center justify-between fixed top-0">
-        <p class="text-2xl text-white font-semibold">Online Voting System</p>
-        <nav class="flex justify-end items-center">
-            <a href="#home" class="mr-4 text-xl text-white hover:underline">Home</a>
-            <a href="#about" class="mr-4 text-xl text-white hover:underline">About</a>
-            <a href="{% url 'register' %}" class="mr-4 text-xl text-white hover:underline">Register</a>
-            <a href="{% url 'vote' %}" class="text-xl text-white hover:underline">Vote</a>
-        </nav>
-    </header>
-    <main>
-        <div class=" bg-center bg-no-repeat bg-cover h-screen w-full" id="home"
-            style="background-image: url('https://cdn.pixabay.com/photo/2024/06/10/08/33/ai-generated-8820201_1280.jpg');">
-        </div>
-        <h2 class="text-center text-4xl text-blue-500 mt-8 font-bold">About</h2>
-        <p class="text-blue-500 mx-4 mt-4 text-justify" id="about"> 
-            Online voting systems have transformed the way elections are conducted by providing voters with the
-            convenience of casting their ballots from anywhere with an internet connection. This accessibility is
-            particularly beneficial for individuals with disabilities or those living in remote areas, who may face
-            challenges in reaching traditional polling stations. By leveraging technology, online voting platforms can
-            significantly increase voter turnout and make the electoral process more inclusive.
+<body class="bg-gray-100">
 
-            The security and verification of online voting systems are critical components that ensure the integrity of
-            the electoral process. These systems rely on robust authentication and verification techniques, such as
-            multi-factor authentication and biometric verification, to confirm that only eligible voters can
-            participate. Additionally, measures like end-to-end encryption protect the privacy of voters and maintain
-            the secrecy of their ballots. While these measures are effective, they must be continually updated to
-            counter emerging cybersecurity threats.
+<!-- NAVBAR -->
+<header class="bg-blue-600 w-full h-[90px] px-6 flex items-center justify-between fixed top-0 shadow-lg z-50">
+    <p class="text-2xl text-white font-bold">Online Voting System</p>
 
-            Despite its numerous advantages, online voting faces several challenges and concerns. Cybersecurity threats remain a major issue, as hackers could potentially compromise the system and manipulate results. Additionally, the digital divide—where some individuals lack access to reliable internet or digital literacy—poses a significant barrier to universal adoption. Ensuring voter anonymity and maintaining public trust in the system are also crucial factors that must be addressed to ensure the success of online voting. By addressing these challenges, online voting can become a reliable and trustworthy method for conducting elections.
-        </p>
-    </main>
-    <footer class="bg-blue-500 w-full h-[250px] mt-8  px-4 ">
-       <div class="flex items-start justify-evenly">
-        <nav class=" flex flex-col mt-4">
-            <a href="#home" class="mb-4 text-xl text-white hover:underline">Home</a>
-            <a href="#about" class="mb-4 text-xl text-white hover:underline">About</a>
-            <a href="{% url 'register' %}" class="mb-4 text-xl text-white hover:underline">Register</a>
-            <a href="{% url 'vote' %}" class="mb-4 text-xl text-white hover:underline">Vote</a>
-        </nav>
-        <div class="mt-4 text-white flex flex-col">
-            <p class="text-xl mb-4">Contact Us</p>
-            <a href='mailto:example@example.com'>example@example.com</a>
-            <a href="tel:+91234567890">+91234567890</a>
-        </div>
-       </div>
-        <p class="text-center mt-4 text-white text-sm">© 2025 online voting system. All rights reserved. </p>
-    </footer>
+    <nav class="flex items-center">
+        <a href="#home" class="mr-6 text-lg text-white hover:underline">Home</a>
+        <a href="#features" class="mr-6 text-lg text-white hover:underline">Features</a>
+        <a href="#about" class="mr-6 text-lg text-white hover:underline">About</a>
+        <a href="{% url 'register' %}" class="mr-6 text-lg text-white hover:underline">Register</a>
+        <a href="{% url 'vote' %}" class="text-lg text-white hover:underline">Vote</a>
+    </nav>
+</header>
+
+<main class="mt-[90px]">
+
+<!-- HERO SECTION -->
+<section id="home" class="bg-cover bg-center h-screen flex flex-col items-center justify-center text-center"
+style="background-image: url('https://cdn.pixabay.com/photo/2024/06/10/08/33/ai-generated-8820201_1280.jpg');">
+
+<h1 class="text-5xl font-bold text-white mb-6">
+Smart Online Voting System
+</h1>
+
+<p class="text-white text-xl mb-8 max-w-xl">
+Secure, transparent and convenient digital voting powered by face recognition technology.
+</p>
+
+<div>
+<a href="{% url 'register' %}">
+<button class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg mr-4 hover:bg-gray-200">
+Register Now
+</button>
+</a>
+
+<a href="{% url 'vote' %}">
+<button class="bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-800">
+Start Voting
+</button>
+</a>
+</div>
+
+</section>
+
+
+<!-- FEATURES SECTION -->
+<section id="features" class="py-16 px-6 bg-white">
+
+<h2 class="text-4xl font-bold text-center text-blue-600 mb-12">
+Key Features
+</h2>
+
+<div class="grid md:grid-cols-3 gap-8">
+
+<div class="bg-gray-100 p-6 rounded-lg shadow">
+<h3 class="text-xl font-semibold mb-2">Face Recognition</h3>
+<p>Advanced biometric authentication ensures only registered voters can vote securely.</p>
+</div>
+
+<div class="bg-gray-100 p-6 rounded-lg shadow">
+<h3 class="text-xl font-semibold mb-2">Secure Voting</h3>
+<p>End-to-end encrypted voting process ensures privacy and protects voter identity.</p>
+</div>
+
+<div class="bg-gray-100 p-6 rounded-lg shadow">
+<h3 class="text-xl font-semibold mb-2">Accessible Anywhere</h3>
+<p>Vote easily from anywhere using a secure online platform.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="py-16 px-6 bg-gray-100">
+
+<h2 class="text-4xl font-bold text-center text-blue-600 mb-12">
+How It Works
+</h2>
+
+<div class="grid md:grid-cols-4 gap-8 text-center">
+
+<div>
+<h3 class="text-xl font-semibold mb-2">1. Register</h3>
+<p>Create your voter account.</p>
+</div>
+
+<div>
+<h3 class="text-xl font-semibold mb-2">2. Face Verification</h3>
+<p>System verifies your identity using face recognition.</p>
+</div>
+
+<div>
+<h3 class="text-xl font-semibold mb-2">3. Vote</h3>
+<p>Select your preferred candidate.</p>
+</div>
+
+<div>
+<h3 class="text-xl font-semibold mb-2">4. Confirmation</h3>
+<p>Your vote is securely recorded.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ABOUT SECTION -->
+<section id="about" class="py-16 px-6 bg-white">
+
+<h2 class="text-4xl font-bold text-blue-600 text-center mb-8">
+About Online Voting
+</h2>
+
+<div class="max-w-4xl mx-auto text-gray-700 text-lg leading-relaxed text-justify">
+
+<p class="mb-6">
+Online voting systems improve accessibility and convenience in elections by enabling voters
+to cast their votes remotely using secure digital platforms.
+</p>
+
+<p class="mb-6">
+This system integrates biometric face recognition technology to verify voter identity and
+ensure that only registered voters can participate in the election process.
+</p>
+
+<p>
+By combining modern authentication techniques with secure voting protocols, online voting
+systems aim to increase voter participation while maintaining transparency and integrity
+in the electoral process.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer class="bg-blue-600 text-white py-10">
+
+<div class="flex flex-col md:flex-row justify-evenly">
+
+<nav class="flex flex-col mb-6">
+<a href="#home" class="mb-3 hover:underline">Home</a>
+<a href="#features" class="mb-3 hover:underline">Features</a>
+<a href="#about" class="mb-3 hover:underline">About</a>
+<a href="{% url 'register' %}" class="mb-3 hover:underline">Register</a>
+<a href="{% url 'vote' %}" class="hover:underline">Vote</a>
+</nav>
+
+<div>
+<p class="text-xl mb-4 font-semibold">Contact Us</p>
+<p>Email: example@example.com</p>
+<p>Phone: +91 234567890</p>
+</div>
+
+</div>
+
+<p class="text-center text-sm mt-8">
+© 2025 Online Voting System. All rights reserved.
+</p>
+
+</footer>
+
 </body>
-
 </html>
